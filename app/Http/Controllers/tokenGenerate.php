@@ -12,7 +12,7 @@ use App\Http\Requests\GenerateTokenRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class tokenGenerate extends Controller
+class TokenGenerate extends Controller
 {
 
     public function generate(GenerateTokenRequest $request)
