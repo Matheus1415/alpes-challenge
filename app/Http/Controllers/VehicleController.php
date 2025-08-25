@@ -15,7 +15,6 @@ use App\Services\VehicleSanitizerService;
 
 class VehicleController extends Controller
 {
-
     public function index(IndexVehicleRequest $request)
     {
         try {
@@ -152,8 +151,8 @@ class VehicleController extends Controller
                     $q->orWhere('chassi', $sanitizedData['chassi']);
                 }
             })
-            ->where('id', '!=', $vehicle->id)
-            ->first();
+                ->where('id', '!=', $vehicle->id)
+                ->first();
 
             if ($duplicate) {
                 return response()->json([
@@ -179,8 +178,28 @@ class VehicleController extends Controller
         }
     }
 
-    public function destroy(Vehicle $vehicle)
+    public function destroy($id)
     {
-        //
+        try {
+            $vehicle = Vehicle::findOrFail($id);
+
+            if (!$vehicle) {
+                return response()->json([
+                    'message' => 'Veículo não encontrado.'
+                ], 404);
+            }
+
+            $vehicle->delete();
+
+            return response()->json([
+                'message' => 'Veículo deletado com sucesso!'
+            ], 200);
+
+        } catch (\Exception $error) {
+            return response()->json([
+                'message' => 'Erro interno ao deletar o veículo.',
+                'error' => $error->getMessage()
+            ], 500);
+        }
     }
 }
