@@ -8,6 +8,10 @@ use App\Models\Vehicle;
 // Request
 use App\Http\Requests\IndexVehicleRequest;
 use App\Http\Requests\StoreVehicleRequest;
+use App\Http\Requests\UpdateVehicleRequest;
+
+// Service
+use App\Services\VehicleSanitizerService;
 
 class VehicleController extends Controller
 {
@@ -87,11 +91,15 @@ class VehicleController extends Controller
                 ], 409);
             }
 
-            $car = Vehicle::create($data);
+            $data = $request->validated();
+
+            $sanitizedData = VehicleSanitizerService::sanitize($data);
+
+            $vehicle = Vehicle::create($sanitizedData);
 
             return response()->json([
                 'message' => 'Veículo cadastrado com sucesso!',
-                'data' => $car
+                'data' => $vehicle
             ], 201);
 
         } catch (\Exception $error) {
@@ -126,10 +134,49 @@ class VehicleController extends Controller
         }
     }
 
-
-    public function update(Request $request, Vehicle $vehicle)
+    public function update(UpdateVehicleRequest $request, $id)
     {
-        //
+        try {
+            $vehicle = Vehicle::findOrFail($id);
+
+            $data = $request->validated();
+
+            $sanitizedData = VehicleSanitizerService::sanitize($data);
+
+            $duplicate = Vehicle::where(function ($q) use ($sanitizedData) {
+                if (!empty($sanitizedData['board'])) {
+                    $q->where('board', $sanitizedData['board']);
+                }
+
+                if (!empty($sanitizedData['chassi'])) {
+                    $q->orWhere('chassi', $sanitizedData['chassi']);
+                }
+            })
+            ->where('id', '!=', $vehicle->id)
+            ->first();
+
+            if ($duplicate) {
+                return response()->json([
+                    'message' => 'Outro veículo já possui essa placa ou chassi.',
+                    'duplicate' => $duplicate
+                ], 409);
+            }
+
+            $vehicle->update($sanitizedData);
+
+            return response()->json([
+                'message' => 'Veículo atualizado com sucesso!',
+                'data' => $vehicle
+            ], 200);
+
+        } catch (\Exception $error) {
+
+
+            return response()->json([
+                'message' => 'Erro interno ao atualizar o veículo.',
+                'error' => $error->getMessage()
+            ], 500);
+        }
     }
 
     public function destroy(Vehicle $vehicle)
