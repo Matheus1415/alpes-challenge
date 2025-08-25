@@ -33,6 +33,12 @@ class VehicleService
             }
         }
 
+        if (!empty($data['year']) && is_array($data['year'])) {
+            $data['year_model'] = $data['year']['model'] ?? null;
+            $data['year_build'] = $data['year']['build'] ?? null;
+            unset($data['year']);
+        }
+
         if (isset($data['optionals']) && is_array($data['optionals'])) {
             $data['optionals'] = array_map(fn($item) => strip_tags($item), $data['optionals']);
         }
@@ -58,22 +64,23 @@ class VehicleService
 
             if ($response->successful() && !empty($response->json())) {
                 $vehicles = $response->json();
-                return array_map([self::class, 'sanitizeVehicle'], $vehicles);
+                return array_map([self::class, 'sanitize'], $vehicles);
             }
 
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $localPath = resource_path('json/vehicles.json');
 
         if (File::exists($localPath)) {
             $vehicles = json_decode(File::get($localPath), true);
             if (!empty($vehicles)) {
-                return array_map([self::class, 'sanitizeVehicle'], $vehicles);
+                return array_map([self::class, 'sanitize'], $vehicles);
             }
         }
 
         return [
-            self::sanitizeVehicle([
+            self::sanitize([
                 'type' => 'carro',
                 'brand' => 'Hyundai',
                 'model' => 'CRETA',

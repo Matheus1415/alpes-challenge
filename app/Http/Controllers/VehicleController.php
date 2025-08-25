@@ -11,7 +11,7 @@ use App\Http\Requests\StoreVehicleRequest;
 use App\Http\Requests\UpdateVehicleRequest;
 
 // Service
-use App\Services\VehicleSanitizerService;
+use App\Services\VehicleService;
 
 class VehicleController extends Controller
 {
@@ -92,7 +92,7 @@ class VehicleController extends Controller
 
             $data = $request->validated();
 
-            $sanitizedData = VehicleSanitizerService::sanitize($data);
+            $sanitizedData = VehicleService::sanitize($data);
 
             $vehicle = Vehicle::create($sanitizedData);
 
@@ -140,7 +140,7 @@ class VehicleController extends Controller
 
             $data = $request->validated();
 
-            $sanitizedData = VehicleSanitizerService::sanitize($data);
+            $sanitizedData = VehicleService::sanitize($data);
 
             $duplicate = Vehicle::where(function ($q) use ($sanitizedData) {
                 if (!empty($sanitizedData['board'])) {
