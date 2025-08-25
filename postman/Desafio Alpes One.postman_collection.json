@@ -1,0 +1,285 @@
+{
+	"info": {
+		"_postman_id": "a3e00cb7-1bf6-4f9a-a702-0a60c8120ffe",
+		"name": "Desafio Alpes One",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33688859",
+		"_collection_link": "https://test11-1363.postman.co/workspace/%25C3%2581rea-de-Trabalho~7aef1b32-ca70-46aa-82fb-677531527b1d/collection/33688859-a3e00cb7-1bf6-4f9a-a702-0a60c8120ffe?action=share&source=collection_link&creator=33688859"
+	},
+	"item": [
+		{
+			"name": "Public Routes",
+			"item": [
+				{
+					"name": "generate.token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Matheus\",\r\n    \"email\": \"matheus@example.com\",\r\n    \"password\": \"123456\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}token-generate",
+							"host": [
+								"{{base_url}}token-generate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"matheus@example.com\",\r\n    \"password\": \"123456\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}login",
+							"host": [
+								"{{base_url}}login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "# **Documentação das Rotas Publicas**\n\n### **`POST /api/generate-token`**\n\nEsta rota permite a criação de um novo usuário no sistema e a geração de um **Personal Access Token** para a autenticação em futuras requisições à API.\n\n---\n\n### **Parâmetros de Requisição (Body)**\n\n| Campo | Tipo | Requerido | Descrição |\n| --- | --- | --- | --- |\n| `name` | string | Sim | O nome completo do usuário. |\n| `email` | string | Sim | O endereço de e-mail único do usuário. Deve ser um formato de e-mail válido. |\n| `password` | string | Sim | A senha do usuário. Deve ter no mínimo 6 caracteres. |\n\n---\n\n### **Exemplo de Requisição**\n\n``` json\n{\n\"name\": \"João da Silva\",\n\"email\": \"joao.silva@example.com\",\n\"password\": \"senha123\"\n}\n\n ```\n\n---\n\n### **Resposta de Sucesso**\n\n**Status:** `201 Created`\n\nRetorna os dados do usuário recém-criado e o token de autenticação. O token deve ser usado no cabeçalho `Authorization` das requisições subsequentes.\n\n**Exemplo de Resposta**\n\n``` json\n{\n  \"user\": {\n    \"name\": \"João da Silva\",\n    \"email\": \"joao.silva@example.com\",\n    \"updated_at\": \"2025-08-25T19:20:00.000000Z\",\n    \"created_at\": \"2025-08-25T19:20:00.000000Z\",\n    \"id\": 1\n  },\n  \"token\": \"4|2G91Jj...1d\"\n}\n\n ```\n\n---\n\n**Status:** `422 Unprocessable Content`\n\nOcorre quando a validação dos dados de entrada falha.\n\n**Exemplo de Resposta:**\n\n``` json\n{\n    \"status\": \"Erro de validação\",\n    \"message\": \"O campo nome é obrigatório.\",\n    \"errors\": {\n        \"name\": [\n            \"O campo nome é obrigatório.\"\n        ],\n        \"email\": [\n            \"O campo email é obrigatório.\"\n        ],\n        \"password\": [\n            \"O campo senha é obrigatório.\"\n        ]\n    }\n}\n\n ```\n\n---\n\n### **`POST /api/login`**\n\nEsta rota permite autenticar um usuário existente no sistema e gerar um **Personal Access Token** para autenticação em futuras requisições à API.\n\n---\n\n### **Parâmetros de Requisição (Body)**\n\n| Campo | Tipo | Requerido | Descrição |\n| --- | --- | --- | --- |\n| `email` | string | Sim | Endereço de e-mail do usuário. Deve ser um e-mail válido cadastrado no sistema. |\n| `password` | string | Sim | Senha do usuário. Deve ter no mínimo 6 caracteres. |\n\n---\n\n### **Exemplo de Requisição**\n\n``` json\n{\n  \"email\": \"teste@example.com\",\n  \"password\": \"123456\"\n}\n\n ```\n\n### Respostas de Sucesso\n\n**Status:** `200 OK`\n\nRetorna os dados do usuário autenticado e o token de acesso para autenticação.\n\n---\n\n**Exemplo de Resposta:**\n\n``` json\n{\n  \"message\": \"Login realizado com sucesso!\",\n  \"user\": {\n    \"id\": 1,\n    \"name\": \"Matheus Pereira\",\n    \"email\": \"teste@example.com\",\n    \"created_at\": \"2025-08-25T16:30:00.000000Z\",\n    \"updated_at\": \"2025-08-25T16:30:00.000000Z\"\n  },\n  \"token\": \"1|abcdef1234567890tokenaqui\"\n}\n\n ```\n\n### **Respostas de Erro**\n\n**Status:** `404 Not Found`\n\nOcorre quando o usuário não existe no sistema.\n\n---\n\n**Exemplo de Resposta:**\n\n``` json\n{\n  \"message\": \"Usuário não existe.\"\n}\n\n ```\n\n**Status:** 401 Unauthorized\n\nOcorre quando a senha informada está incorreta.\n\n---\n\n**Exemplo de Resposta:**\n\n``` json\n{\n  \"message\": \"Senha incorreta.\"\n}\n\n ```"
+		},
+		{
+			"name": "Private routes",
+			"item": [
+				{
+					"name": "vehicles.index",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n//   \"brand\": \"Hyundai\",\r\n//   \"model\": \"CRETA\",\r\n//   \"category\": \"SUV\",\r\n//   \"fuel\": \"Gasolina\",\r\n//   \"year_model\": 2025,\r\n//   \"price_min\": 100000,\r\n//   \"price_max\": 120000,\r\n//   \"transmission\": \"Automática\",\r\n//   \"color\": \"Branco\",\r\n//   \"sold\": false,\r\n//   \"board\": \"JCU2I93\",\r\n//   \"chassi\": \"9BWZZZ377VT004251\",\r\n//   \"optionals\": [\"Ar-condicionado\", \"Direção elétrica\"],\r\n//   \"sort\": \"price\",\r\n  \"direction\": \"asc\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}vehicles",
+							"host": [
+								"{{base_url}}vehicles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vehicle.show",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"type\": \"carro\",\r\n  \"brand\": \"Hyundai\",\r\n  \"model\": \"CRETA\",\r\n  \"version\": \"CRETA 16A ACTION\",\r\n  \"year_model\": 2025,\r\n  \"year_build\": 2025,\r\n  \"optionals\": [\"Ar-condicionado\", \"Direção elétrica\", \"Airbag duplo\"],\r\n  \"doors\": 5,\r\n  \"board\": \"JCU2I93\",\r\n  \"chassi\": \"9BWZZZ377VT004251\",\r\n  \"transmission\": \"Automática\",\r\n  \"km\": 24208,\r\n  \"description\": \"Veículo revisado, com garantia e procedência.\",\r\n  \"sold\": false,\r\n  \"category\": \"SUV\",\r\n  \"url_car\": \"hyundai-creta-2025-automatica-125306\",\r\n  \"old_price\": 119900.00,\r\n  \"price\": 115900.00,\r\n  \"color\": \"Branco\",\r\n  \"fuel\": \"Gasolina\",\r\n  \"fotos\": [\r\n    \"https://alpes-hub.s3.amazonaws.com/uploads/public/67c/0b5/8c9/67c0b58c91b8f637846682.jpeg\",\r\n    \"https://alpes-hub.s3.amazonaws.com/uploads/public/67c/0b5/a90/67c0b5a9067ff421616405.jpeg\",\r\n    \"https://alpes-hub.s3.amazonaws.com/uploads/public/67c/0b5/94e/67c0b594eb2dc220649342.jpeg\"\r\n  ]\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{base_url}}vehicles/1",
+							"host": [
+								"{{base_url}}vehicles"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vehicles.store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"type\": \"carro\",\r\n  \"brand\": \"Hyundai\",\r\n  \"model\": \"CRETA\",\r\n  \"version\": \"CRETA 16A ACTION\",\r\n  \"year_model\": 2025,\r\n  \"year_build\": 2025,\r\n  \"optionals\": [\"Ar-condicionado\", \"Direção elétrica\", \"Airbag duplo\"],\r\n  \"doors\": 5,\r\n  \"board\": \"JCU2I93\",\r\n  \"chassi\": \"9BWZZZ377VT004251\",\r\n  \"transmission\": \"Automática\",\r\n  \"km\": 24208,\r\n  \"description\": \"Veículo revisado, com garantia e procedência.\",\r\n  \"sold\": false,\r\n  \"category\": \"SUV\",\r\n  \"url_car\": \"hyundai-creta-2025-automatica-125306\",\r\n  \"old_price\": 119900.00,\r\n  \"price\": 115900.00,\r\n  \"color\": \"Branco\",\r\n  \"fuel\": \"Gasolina\",\r\n  \"fotos\": [\r\n    \"https://alpes-hub.s3.amazonaws.com/uploads/public/67c/0b5/8c9/67c0b58c91b8f637846682.jpeg\",\r\n    \"https://alpes-hub.s3.amazonaws.com/uploads/public/67c/0b5/a90/67c0b5a9067ff421616405.jpeg\",\r\n    \"https://alpes-hub.s3.amazonaws.com/uploads/public/67c/0b5/94e/67c0b594eb2dc220649342.jpeg\"\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}vehicles",
+							"host": [
+								"{{base_url}}vehicles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vehicles.update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n//   \"brand\": \"Hyundai\",\r\n//   \"model\": \"CRETA\",\r\n//   \"category\": \"SUV\",\r\n//   \"fuel\": \"Gasolina\",\r\n//   \"year_model\": 2025,\r\n//   \"year_build\": 2025,\r\n//   \"price\": 120000.00,\r\n//   \"transmission\": \"Automática\",\r\n//   \"color\": \"Prata\",\r\n//   \"board\": \"JCU2I93\",\r\n//   \"chassi\": \"9BWZZZ377VT004251\",\r\n//   \"description\": \"Veículo revisado, garantia de fábrica, procedência comprovada.\",\r\n//   \"optionals\": [\"Ar-condicionado\", \"Vidro elétrico\", \"Central multimídia\"],\r\n//   \"fotos\": [\r\n//     \"https://alpes-hub.s3.amazonaws.com/uploads/public/67c/0b5/8c9/67c0b58c91b8f637846682.jpeg\",\r\n//     \"https://alpes-hub.s3.amazonaws.com/uploads/public/67c/0b5/a90/67c0b5a9067ff421616405.jpeg\"\r\n//   ],\r\n//   \"sold\": false\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}vehicles/1",
+							"host": [
+								"{{base_url}}vehicles"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vehicles.destroy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n//   \"brand\": \"Hyundai\",\r\n//   \"model\": \"CRETA\",\r\n//   \"category\": \"SUV\",\r\n//   \"fuel\": \"Gasolina\",\r\n//   \"year_model\": 2025,\r\n//   \"year_build\": 2025,\r\n//   \"price\": 120000.00,\r\n//   \"transmission\": \"Automática\",\r\n//   \"color\": \"Prata\",\r\n//   \"board\": \"JCU2I93\",\r\n//   \"chassi\": \"9BWZZZ377VT004251\",\r\n//   \"description\": \"Veículo revisado, garantia de fábrica, procedência comprovada.\",\r\n//   \"optionals\": [\"Ar-condicionado\", \"Vidro elétrico\", \"Central multimídia\"],\r\n//   \"fotos\": [\r\n//     \"https://alpes-hub.s3.amazonaws.com/uploads/public/67c/0b5/8c9/67c0b58c91b8f637846682.jpeg\",\r\n//     \"https://alpes-hub.s3.amazonaws.com/uploads/public/67c/0b5/a90/67c0b5a9067ff421616405.jpeg\"\r\n//   ],\r\n//   \"sold\": false\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{base_url}}vehicles/1",
+							"host": [
+								"{{base_url}}vehicles"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "# **Documentação da API: VehicleController**\n\nEste controlador gerencia todos os endpoints relacionados a veículos, incluindo listagem, cadastro, visualização, atualização e exclusão.\n\n---\n\n## **1\\. Listar Veículos**\n\n### **`GET /api/vehicles`**\n\nLista todos os veículos com filtros opcionais.\n\n### **Parâmetros de Consulta (Query Params)**\n\n| Campo | Tipo | Requerido | Descrição |\n| --- | --- | --- | --- |\n| `brand` | string | Não | Filtra pelo nome da marca. |\n| `model` | string | Não | Filtra pelo modelo do veículo. |\n| `category` | string | Não | Filtra pela categoria (SUV, Hatchback, etc.). |\n| `fuel` | string | Não | Filtra pelo tipo de combustível. |\n| `year_model` | int | Não | Filtra pelo ano do modelo. |\n| `price_min` | float | Não | Filtra pelo preço mínimo. |\n| `price_max` | float | Não | Filtra pelo preço máximo. |\n| `transmission` | string | Não | Filtra pela transmissão (Manual, Automática). |\n| `color` | string | Não | Filtra pela cor do veículo. |\n| `sold` | boolean | Não | Filtra por veículo vendido ou disponível. |\n| `board` | string | Não | Filtra pela placa do veículo. |\n| `chassi` | string | Não | Filtra pelo chassi do veículo. |\n| `optionals` | array | Não | Filtra por opcionais do veículo. |\n| `sort` | string | Não | Campo para ordenação (default `created_at`). |\n| `direction` | string | Não | Direção da ordenação (`asc` ou `desc`). |\n\n### **Exemplo de Resposta**\n\n``` json\n{\n  \"message\": \"Lista de veículos recuperada com sucesso!\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"brand\": \"Hyundai\",\n      \"model\": \"CRETA\",\n      \"category\": \"SUV\",\n      \"price\": 115900.00,\n      \"sold\": false,\n      \"board\": \"JCU2I93\",\n      \"chassi\": \"9BWZZZ377VT004251\",\n      \"created_at\": \"2025-08-25T16:30:00.000000Z\",\n      \"updated_at\": \"2025-08-25T16:30:00.000000Z\"\n    }\n  ]\n}\n\n ```\n\n---\n\n## **2\\. Cadastrar Veículo**\n\n### **`POST /api/vehicles`**\n\nCadastra um novo veículo no sistema.\n\n### **Parâmetros de Requisição (Body)**\n\n| Campo | Tipo | Requerido | Descrição |\n| --- | --- | --- | --- |\n| `type` | string | Sim | Tipo do veículo (carro, moto, etc.). |\n| `brand` | string | Sim | Marca do veículo. |\n| `model` | string | Sim | Modelo do veículo. |\n| `version` | string | Não | Versão do veículo. |\n| `year_model` | int | Sim | Ano do modelo. |\n| `year_build` | int | Sim | Ano de fabricação. |\n| `optionals` | array | Não | Lista de opcionais. |\n| `doors` | int | Não | Número de portas. |\n| `board` | string | Sim | Placa do veículo. |\n| `chassi` | string | Não | Chassi do veículo. |\n| `transmission` | string | Não | Tipo de transmissão. |\n| `km` | int | Não | Quilometragem do veículo. |\n| `description` | string | Não | Descrição do veículo. |\n| `sold` | boolean | Não | Status de venda. |\n| `category` | string | Não | Categoria do veículo. |\n| `url_car` | string | Não | URL amigável para o veículo. |\n| `old_price` | float | Não | Preço antigo. |\n| `price` | float | Sim | Preço atual. |\n| `color` | string | Não | Cor do veículo. |\n| `fuel` | string | Não | Tipo de combustível. |\n| `fotos` | array | Não | URLs das fotos do veículo. |\n\n---\n\n### **Exemplo de Requisição**\n\n``` json\n{\n  \"type\": \"carro\",\n  \"brand\": \"Hyundai\",\n  \"model\": \"CRETA\",\n  \"version\": \"CRETA 16A ACTION\",\n  \"year_model\": 2025,\n  \"year_build\": 2025,\n  \"optionals\": [\"Ar-condicionado\", \"Direção elétrica\", \"Airbag duplo\"],\n  \"doors\": 5,\n  \"board\": \"JCU2I93\",\n  \"chassi\": \"9BWZZZ377VT004251\",\n  \"transmission\": \"Automática\",\n  \"km\": 24208,\n  \"description\": \"Veículo revisado, com garantia e procedência.\",\n  \"sold\": false,\n  \"category\": \"SUV\",\n  \"url_car\": \"hyundai-creta-2025-automatica-125306\",\n  \"old_price\": 119900.00,\n  \"price\": 115900.00,\n  \"color\": \"Branco\",\n  \"fuel\": \"Gasolina\",\n  \"fotos\": [\n    \"https://alpes-hub.s3.amazonaws.com/uploads/public/67c/0b5/8c9/67c0b58c91b8f637846682.jpeg\"\n  ]\n}\n\n ```\n\n### **Resposta de Sucesso**\n\n**Status:** 201 Created\n\n``` json\n{\n  \"message\": \"Veículo cadastrado com sucesso!\",\n  \"data\": {\n    \"id\": 1,\n    \"brand\": \"Hyundai\",\n    \"model\": \"CRETA\",\n    \"board\": \"JCU2I93\"\n  }\n}\n\n ```\n\n---\n\n## **3\\. Visualizar Veículo**\n\n### **`GET /api/vehicles/{id}`**\n\nRetorna os detalhes de um veículo específico.\n\n### **Exemplo de Resposta**\n\n**Status:** 200 OK\n\n``` json\n{\n  \"message\": \"Veículo encontrado com sucesso!\",\n  \"data\": {\n    \"id\": 1,\n    \"brand\": \"Hyundai\",\n    \"model\": \"CRETA\",\n    \"board\": \"JCU2I93\"\n  }\n}\n\n ```\n\n**Erro:** 404 Not Found\n\n``` json\n{\n  \"message\": \"Veículo não encontrado.\"\n}\n\n ```\n\n---\n\n## **4\\. Atualizar Veículo**\n\n### **`PUT /api/vehicles/{id}`**\n\nAtualiza os dados de um veículo existente.\n\n### **Exemplo de Requisição**\n\nMesmos campos do cadastro (`store`).\n\n### **Resposta de Sucesso**\n\n**Status:** 200 OK\n\n``` json\n{\n  \"message\": \"Veículo atualizado com sucesso!\",\n  \"data\": {\n    \"id\": 1,\n    \"brand\": \"Hyundai\",\n    \"model\": \"CRETA\",\n    \"board\": \"JCU2I93\"\n  }\n}\n\n ```\n\n**Erro de Duplicidade:** 409 Conflict\n\n``` json\n{\n  \"message\": \"Outro veículo já possui essa placa ou chassi.\",\n  \"duplicate\": {...}\n}\n\n ```\n\n---\n\n## **5\\. Deletar Veículo**\n\n### **`DELETE /api/vehicles/{id}`**\n\nRemove um veículo do sistema.\n\n### **Resposta de Sucesso**\n\n**Status:** 200 OK\n\n``` json\n{\n  \"message\": \"Veículo deletado com sucesso!\"\n}\n\n ```\n\n**Erro:** 404 Not Found\n\n``` json\n{\n  \"message\": \"Veículo não encontrado.\"\n}\n\n ```"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000/api/"
+		},
+		{
+			"key": "auth_token",
+			"value": "1|Mzl5vNrYdsyVaWv0FbyyrMFZV71R4csEESlKisVVdf876d94"
+		}
+	]
+}
