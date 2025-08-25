@@ -27,7 +27,6 @@ class AuthController extends Controller
 
             // Remove tokens anteriores e cria um novo token e loga o usuário
             Auth::login($user);
-
             $user->tokens()->delete();
             $token = $user->createToken('api-token')->plainTextToken;
 
