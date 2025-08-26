@@ -53,6 +53,11 @@ Para facilitar os testes da API, o projeto já inclui uma coleção pronta do Po
 ```
 Essa coleção contém todos os endpoints implementados, com suporte a variáveis de ambiente para facilitar a troca entre deploy e ambiente local.
 
+> [!NOTE]  
+> A coleção está organizada em duas pastas principais:
+> - **Public Routes** → Documenta os endpoints públicos, que não exigem autenticação.  
+> - **Private Routes** → Documenta os endpoints protegidos, que requerem autenticação via `auth_token`.  
+
 ## Como importar a Collection no Postman
 1. Abra o Postman.
 2. Clique em Import (canto superior esquerdo).
