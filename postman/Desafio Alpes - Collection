@@ -2,9 +2,10 @@
 	"info": {
 		"_postman_id": "a3e00cb7-1bf6-4f9a-a702-0a60c8120ffe",
 		"name": "Desafio Alpes One",
+		"description": "# **Resumo do VehicleController**\n\nO `VehicleController` é responsável por gerenciar todos os aspectos relacionados aos veículos dentro do sistema. Ele centraliza operações de CRUD (Create, Read, Update, Delete) e oferece utilitários para facilitar a manipulação de dados, garantindo integridade e consistência.\n\n---\n\n## **Funcionalidades Principais**\n\n1. **Listagem de Veículos (****`index`****)**\n    \n    - Permite buscar veículos cadastrados no sistema.\n        \n    - Suporta múltiplos filtros, como marca, modelo, categoria, combustível, ano, cor, transmissão e status de venda.\n        \n    - Possibilita ordenação dinâmica pelos campos disponíveis.\n        \n    - Retorna uma coleção completa de veículos, permitindo integração com front-end ou APIs externas.\n        \n2. **Cadastro de Veículos (****`store`****)**\n    \n    - Cria um novo registro de veículo no banco de dados.\n        \n    - Valida campos obrigatórios e impede duplicidade de placa ou chassi.\n        \n    - Sanitiza os campos de texto antes de salvar, garantindo que dados não sejam corrompidos.\n        \n    - Retorna informações do veículo cadastrado.\n        \n3. **Visualização de Veículo (****`show`****)**\n    \n    - Retorna os detalhes completos de um veículo específico pelo seu ID.\n        \n    - Valida se o veículo existe antes de retornar os dados.\n        \n    - Permite integração direta com interfaces que precisam de detalhes individuais de veículos.\n        \n4. **Atualização de Veículos (****`update`****)**\n    \n    - Atualiza informações de um veículo existente.\n        \n    - Sanitiza dados de entrada e verifica duplicidade de placa ou chassi em outros veículos.\n        \n    - Retorna os dados atualizados em resposta.\n        \n5. **Exclusão de Veículos (****`destroy`****)**\n    \n    - Remove um veículo do sistema pelo ID.\n        \n    - Valida a existência do registro antes de excluir.\n        \n    - Garante respostas padronizadas em caso de sucesso ou erro.\n        \n\n---\n\n## **Utilitários e Boas Práticas**\n\n- **Sanitização de Campos:** Todos os campos de texto passam por um processo de limpeza para evitar dados corrompidos ou caracteres indesejados.\n    \n- **Validação de Unicidade:** Placa e chassi são únicos no banco; duplicidades retornam mensagens de erro.\n    \n- **Filtros Dinâmicos:** O método de listagem (`index`) permite filtros combinados, facilitando buscas complexas.\n    \n- **Tratamento de Erros:** Todos os métodos possuem tratamento de exceções, retornando mensagens claras e códigos HTTP adequados.\n    \n- **Estrutura para Integração:** Projetado para consumo via API, permitindo integração com front-ends ou serviços externos de forma segura e padronizada.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "33688859",
-		"_collection_link": "https://test11-1363.postman.co/workspace/%25C3%2581rea-de-Trabalho~7aef1b32-ca70-46aa-82fb-677531527b1d/collection/33688859-a3e00cb7-1bf6-4f9a-a702-0a60c8120ffe?action=share&source=collection_link&creator=33688859"
+		"_collection_link": "https://test11-1363.postman.co/workspace/%C3%81rea-de-Trabalho~7aef1b32-ca70-46aa-82fb-677531527b1d/collection/33688859-a3e00cb7-1bf6-4f9a-a702-0a60c8120ffe?action=share&source=collection_link&creator=33688859"
 	},
 	"item": [
 		{
@@ -26,10 +27,16 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Matheus\",\r\n    \"email\": \"matheus@example.com\",\r\n    \"password\": \"123456\"\r\n}\r\n",
+							"raw": "{\r\n    \"name\": \"Matheus\",\r\n    \"email\": \"daniel@example.com\",\r\n    \"password\": \"123456\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -275,11 +282,11 @@
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "http://127.0.0.1:8000/api/"
+			"value": "https://alpes-challenge-8e9x2cofu.vercel.app/api/"
 		},
 		{
 			"key": "auth_token",
-			"value": "1|Mzl5vNrYdsyVaWv0FbyyrMFZV71R4csEESlKisVVdf876d94"
+			"value": "1|dWaxoFduVnrUZI0QNfVoEveuU03M8G3o0iI2WXka1c0464c7"
 		}
 	]
 }
